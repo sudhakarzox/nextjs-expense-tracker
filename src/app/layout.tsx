@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,10 +24,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#10b981" />
+        <link rel="icon" href="/icons/courthouse.png" />
+        <link rel="apple-touch-icon" href="/icons/courthouse.png" />
+      </head>
+      <body className="bg-white text-gray-800">
+
+       {/* Title Bar */}
+        <header className="w-full bg-gray-600 text-white px-6 py-4 shadow">
+            <div className="max-w-6xl mx-auto flex justify-between items-center">
+              <h1 className="text-2xl font-bold">Expense Tracker</h1>
+              <nav className="space-x-4 hidden sm:block">
+                <a href="/transactions" className="hover:underline">
+                  Transactions
+                </a>
+                <a href="/categories" className="hover:underline">
+                  Categories
+                </a>
+              </nav>
+            </div>
+          </header>
+
+          <main className="min-h-full p-4">{children}</main>
+
       </body>
     </html>
   );
