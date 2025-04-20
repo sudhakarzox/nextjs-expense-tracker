@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import SignOutButton from "@/components/SignoutButton";
+import { authOptions } from "@/lib/authOptions";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -40,7 +40,7 @@ export default async function RootLayout({
             <div className="max-w-6xl mx-auto flex justify-between items-center">
               <h1 className="text-2xl font-bold">Expense Tracker</h1>
               <nav className="space-x-4 hidden sm:block">
-                <a href="/transactions" className="hover:underline">
+                <a href="/transactions-list" className="hover:underline">
                   Transactions
                 </a>
                 <a href="/categories" className="hover:underline">
