@@ -1,26 +1,28 @@
 steps:
-# Your build steps here
+  # 1. Access the secret from Secret Manager and store it in a file
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gcloud secrets versions access latest --secret=mongo-uri-secret --format='get(payload.data)' | tr '_-' '/+' | base64 -d > mongo_uri.txt
+
+  # 2. Build the Docker image
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA # Replace with your desired image name and tag
+      - .
+    env:
+      - MONGO_URI=$(cat mongo_uri.txt)
+
+  # 3. Push the Docker image to Artifact Registry (or Container Registry)
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA # Replace with your desired image name and tag
+
+# Optional: Configure logging if you're using a service account
 options:
-    logging: CLOUD_LOGGING_ONLY
-
-steps:
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'fetch-secret'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      echo "Fetching MongoDB URI..."
-      MONGO_URI=$(gcloud secrets versions access latest --secret=MONGODB_URI)
-      echo "MONGO_URI=$MONGO_URI" > /workspace/.env
-
-- name: 'gcr.io/cloud-builders/docker'
-  args:
-    [
-      'build', '-t', 'gcr.io/$PROJECT_ID/nextjs-expense-tracker',
-      '--build-arg', 'MONGODB_URI=$(grep MONGO_URI /workspace/.env | cut -d "=" -f2-)',
-      '.'
-    ]
-
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/nextjs-expense-tracker']
+  logging: CLOUD_LOGGING_ONLY
