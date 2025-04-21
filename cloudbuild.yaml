@@ -1,0 +1,22 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/nomadic-groove-452313-s4/expense-tracker', '.']
+    env:
+      - 'NEXTAUTH_URL=http://localhost:3000'
+    secretEnv:
+      - 'MONGODB_URI'
+      - 'GOOGLE_CLIENT_ID'
+      - 'GOOGLE_CLIENT_SECRET'
+      - 'NEXTAUTH_URL'
+availableSecrets:
+  secretManager:
+    - versionName: 'projects/nomadic-groove-452313-s4/secrets/MONGODB_URI/versions/latest'
+      env: 'MONGODB_URI'
+    - versionName: 'projects/nomadic-groove-452313-s4/secrets/GOOGLE_CLIENT_ID/versions/latest'
+      env: 'GOOGLE_CLIENT_ID'
+    - versionName: 'projects/nomadic-groove-452313-s4/secrets/GOOGLE_CLIENT_SECRET/versions/latest'
+      env: 'GOOGLE_CLIENT_SECRET'
+    - versionName: 'projects/nomadic-groove-452313-s4/secrets/NEXTAUTH_SECRET/versions/latest'
+      env: 'NEXTAUTH_SECRET'
+images:
+  - 'gcr.io/nomadic-groove-452313-s4/expense-tracker'
