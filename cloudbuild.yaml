@@ -18,8 +18,8 @@ steps:
      args:
       - 'build'
       - '-t'
-      # - 'gcr.io/710919758521/my-app:$SHORT_SHA'
-      # - '--build-arg'
+      - 'gcr.io/710919758521/nextjs-expense-tracker:$SHORT_SHA'
+      - '--build-arg'
       - 'MONGODB_URI=$$MONGODB_URI'
       - '--build-arg'
       - 'GOOGLE_CLIENT_ID=$$GOOGLE_CLIENT_ID'
@@ -32,9 +32,9 @@ steps:
      env:
        - NODE_ENV=production
        - NEXTAUTH_URL=https://localhost:3000
-#    - name: 'gcr.io/cloud-builders/docker'
-#      args: ['push', 'gcr.io/710919758521/my-app:$SHORT_SHA']
-# images: ['gcr.io/710919758521/nextjs-exp:$SHORT_SHA']
+   - name: 'gcr.io/cloud-builders/docker'
+     args: ['push', 'gcr.io/710919758521/nextjs-expense-tracker:$SHORT_SHA']
+images: ['gcr.io/710919758521/nextjs-expense-tracker:$SHORT_SHA']
 availableSecrets:
   secretManager:
     - versionName: 'projects/710919758521/secrets/MONGODB_URI/versions/latest'
