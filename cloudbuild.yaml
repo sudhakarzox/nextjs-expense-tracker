@@ -15,6 +15,7 @@ steps:
      env:
        - NODE_ENV=production
        - NEXTAUTH_URL=https://localhost:3000
+       - MONGODB_URI=$$MONGODB_URI
 availableSecrets:
   secretManager:
     - versionName: 'projects/710919758521/secrets/MONGODB_URI/versions/latest'
