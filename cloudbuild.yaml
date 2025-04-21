@@ -1,31 +1,21 @@
 steps:
-   - name: 'gcr.io/cloud-builders/npm'
-     entrypoint: 'bash'
-     args:
-       - '-c'
-       - |
-         export MONGODB_URI=$$MONGODB_URI
-         export GOOGLE_CLIENT_ID=$$GOOGLE_CLIENT_ID
-         export GOOGLE_CLIENT_SECRET=$$GOOGLE_CLIENT_SECRET
-         export NEXTAUTH_SECRET=$$NEXTAUTH_SECRET
-        
-         npm install
-         npm run build
-     secretEnv: ['MONGODB_URI', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'NEXTAUTH_SECRET']
-     env:
-       - NODE_ENV=production
-       - NEXTAUTH_URL=https://localhost:3000
-       - MONGODB_URI=$$MONGODB_URI
-availableSecrets:
-  secretManager:
-    - versionName: 'projects/710919758521/secrets/MONGODB_URI/versions/latest'
-      env: 'MONGODB_URI'
-    - versionName: 'projects/710919758521/secrets/GOOGLE_CLIENT_ID/versions/latest'
-      env: 'GOOGLE_CLIENT_ID'
-    - versionName: 'projects/710919758521/secrets/GOOGLE_CLIENT_SECRET/versions/latest'
-      env: 'GOOGLE_CLIENT_SECRET'
-    - versionName: 'projects/710919758521/secrets/NEXTAUTH_SECRET/versions/latest'
-      env: 'NEXTAUTH_SECRET'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  id: 'fetch-secret'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      echo "Fetching MongoDB URI..."
+      MONGO_URI=$(gcloud secrets versions access latest --secret=MONGODB_URI)
+      echo "MONGO_URI=$MONGO_URI" > /workspace/.env
 
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    [
+      'build', '-t', 'gcr.io/$PROJECT_ID/nextjs-expense-tracker',
+      '--build-arg', 'MONGODB_URI=$(grep MONGO_URI /workspace/.env | cut -d "=" -f2-)',
+      '.'
+    ]
 
-  
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/nextjs-expense-tracker']
