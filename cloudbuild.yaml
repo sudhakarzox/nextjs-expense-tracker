@@ -5,7 +5,7 @@ steps:
     args:
       - -c
       - |
-        gcloud secrets versions access latest --secret=projects/710919758521/secrets/MONGODB_URI --format='get(payload.data)' | tr '_-' '/+' | base64 -d > mongo_uri.txt
+        gcloud secrets versions access latest --secret=MONGODB_URI --format='get(payload.data)' | tr '_-' '/+' | base64 -d > mongo_uri.txt
 
   # 2. Build the Docker image
   - name: gcr.io/cloud-builders/docker
