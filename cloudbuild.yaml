@@ -15,7 +15,7 @@ steps:
       - gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA # Replace with your desired image name and tag
       - .
     env:
-      - MONGO_URI=$(cat mongo_uri.txt)
+      - MONGODB_URI=$(cat mongo_uri.txt)
 
   # 3. Push the Docker image to Artifact Registry (or Container Registry)
   - name: gcr.io/cloud-builders/docker
