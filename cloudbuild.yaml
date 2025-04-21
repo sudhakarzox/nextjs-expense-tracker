@@ -15,4 +15,4 @@ steps:
        - NODE_ENV=production
        - NEXTAUTH_URL=https://localhost:3000
 images:
-  - 'gcr.io/nomadic-groove-452313-s4/expense-tracker'
+  - 'gcr.io/nomadic-groove-452313-s4/nextjs-expense-tracker'
