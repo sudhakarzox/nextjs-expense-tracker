@@ -11,6 +11,7 @@ steps:
         
          npm install
          npm run build
+     secretEnv: ['MONGODB_URI', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'NEXTAUTH_SECRET']
      env:
        - NODE_ENV=production
        - NEXTAUTH_URL=https://localhost:3000
