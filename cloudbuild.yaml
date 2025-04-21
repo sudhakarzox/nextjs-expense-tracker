@@ -4,11 +4,10 @@ steps:
      args:
        - '-c'
        - |
-         export MONGODB_URL=$$(gcloud secrets versions access latest --secret=MONGODB_URI)
-         export GOOGLE_CLIENT_ID=$$(gcloud secrets versions access latest --secret=GOOGLE_CLIENT_ID)
-         export GOOGLE_CLIENT_SECRET=$$(gcloud secrets versions access latest --secret=GOOGLE_CLIENT_SECRET)
-         export NEXTAUTH_URL=$$(gcloud secrets versions access latest --secret=NEXTAUTH_URL)
-         export NEXTAUTH_SECRET=$$(gcloud secrets versions access latest --secret=NEXTAUTH_SECRET)
+         export MONGODB_URL=$$(gcloud secrets versions access latest --secret=projects/710919758521/secrets/MONGODB_URI)
+         export GOOGLE_CLIENT_ID=$$(gcloud secrets versions access latest --secret=projects/710919758521/secrets/GOOGLE_CLIENT_ID)
+         export GOOGLE_CLIENT_SECRET=$$(gcloud secrets versions access latest --secret=projects/710919758521/secrets/GOOGLE_CLIENT_SECRET)
+         export NEXTAUTH_SECRET=$$(gcloud secrets versions access latest --secret=projects/710919758521/secrets/NEXTAUTH_SECRET)
          npm install
          npm run build
      env:
@@ -16,3 +15,5 @@ steps:
        - NEXTAUTH_URL=https://localhost:3000
 images:
   - 'gcr.io/nomadic-groove-452313-s4/nextjs-expense-tracker'
+
+  
