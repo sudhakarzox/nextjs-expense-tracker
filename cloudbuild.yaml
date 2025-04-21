@@ -14,15 +14,36 @@ steps:
      env:
        - NODE_ENV=production
        - NEXTAUTH_URL=https://localhost:3000
+   - name: 'gcr.io/cloud-builders/docker'
+     args:
+      - 'build'
+      - '-t'
+      # - 'gcr.io/710919758521/my-app:$SHORT_SHA'
+      # - '--build-arg'
+      - 'MONGODB_URI=$$MONGODB_URI'
+      - '--build-arg'
+      - 'GOOGLE_CLIENT_ID=$$GOOGLE_CLIENT_ID'
+      - '--build-arg'
+      - '--build-arg'
+      - 'GOOGLE_CLIENT_SECRET=$$GOOGLE_CLIENT_SECRET'
+      - '--build-arg'
+      - 'NEXTAUTH_SECRET=$$NEXTAUTH_SECRET'
+      - '.'
+     env:
+       - NODE_ENV=production
+       - NEXTAUTH_URL=https://localhost:3000
+#    - name: 'gcr.io/cloud-builders/docker'
+#      args: ['push', 'gcr.io/710919758521/my-app:$SHORT_SHA']
+# images: ['gcr.io/710919758521/nextjs-exp:$SHORT_SHA']
 availableSecrets:
   secretManager:
-    - versionName: 'projects/your-project-id/secrets/MONGODB_URI/versions/latest'
+    - versionName: 'projects/710919758521/secrets/MONGODB_URI/versions/latest'
       env: 'MONGODB_URI'
-    - versionName: 'projects/your-project-id/secrets/GOOGLE_CLIENT_ID/versions/latest'
+    - versionName: 'projects/710919758521/secrets/GOOGLE_CLIENT_ID/versions/latest'
       env: 'GOOGLE_CLIENT_ID'
-    - versionName: 'projects/your-project-id/secrets/GOOGLE_CLIENT_SECRET/versions/latest'
+    - versionName: 'projects/710919758521/secrets/GOOGLE_CLIENT_SECRET/versions/latest'
       env: 'GOOGLE_CLIENT_SECRET'
-    - versionName: 'projects/your-project-id/secrets/NEXTAUTH_SECRET/versions/latest'
+    - versionName: 'projects/710919758521/secrets/NEXTAUTH_SECRET/versions/latest'
       env: 'NEXTAUTH_SECRET'
 
 
