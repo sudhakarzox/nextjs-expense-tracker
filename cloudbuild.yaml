@@ -1,22 +1,18 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/nomadic-groove-452313-s4/expense-tracker', '.']
-    env:
-      - 'NEXTAUTH_URL=http://localhost:3000'
-    secretEnv:
-      - 'MONGODB_URI'
-      - 'GOOGLE_CLIENT_ID'
-      - 'GOOGLE_CLIENT_SECRET'
-      - 'NEXTAUTH_URL'
-availableSecrets:
-  secretManager:
-    - versionName: 'projects/nomadic-groove-452313-s4/secrets/MONGODB_URI/versions/latest'
-      env: 'MONGODB_URI'
-    - versionName: 'projects/nomadic-groove-452313-s4/secrets/GOOGLE_CLIENT_ID/versions/latest'
-      env: 'GOOGLE_CLIENT_ID'
-    - versionName: 'projects/nomadic-groove-452313-s4/secrets/GOOGLE_CLIENT_SECRET/versions/latest'
-      env: 'GOOGLE_CLIENT_SECRET'
-    - versionName: 'projects/nomadic-groove-452313-s4/secrets/NEXTAUTH_SECRET/versions/latest'
-      env: 'NEXTAUTH_SECRET'
+   - name: 'gcr.io/cloud-builders/npm'
+     entrypoint: 'bash'
+     args:
+       - '-c'
+       - |
+         export MONGODB_URL=$$(gcloud secrets versions access latest --secret=MONGODB_URI)
+         export GOOGLE_CLIENT_ID=$$(gcloud secrets versions access latest --secret=GOOGLE_CLIENT_ID)
+         export GOOGLE_CLIENT_SECRET=$$(gcloud secrets versions access latest --secret=GOOGLE_CLIENT_SECRET)
+         export NEXTAUTH_URL=$$(gcloud secrets versions access latest --secret=NEXTAUTH_URL)
+         export NEXTAUTH_SECRET=$$(gcloud secrets versions access latest --secret=NEXTAUTH_SECRET)
+         npm install
+         npm run build
+     env:
+       - NODE_ENV=production
+       - NEXTAUTH_URL=https://localhost:3000
 images:
   - 'gcr.io/nomadic-groove-452313-s4/expense-tracker'
