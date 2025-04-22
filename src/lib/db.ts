@@ -14,12 +14,26 @@ export async function connectDB() {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI, {
-      dbName: "expense-tracker",
-      bufferCommands: false,
-    });
+    cached.promise = mongoose
+      .connect(MONGODB_URI, {
+        dbName: "expense-tracker",
+        bufferCommands: false,
+      })
+      .then((mongoose) => {
+        console.log("Connected to MongoDB");
+        return mongoose;
+      })
+      .catch((error) => {
+        console.error("Error connecting to MongoDB:", error);
+        throw error; // Re-throw the error to propagate it
+      });
   }
 
-  cached.conn = await cached.promise;
-  return cached.conn;
+  try {
+    cached.conn = await cached.promise;
+    return cached.conn;
+  } catch (error) {
+    console.error("Failed to establish a MongoDB connection:", error);
+    throw error; // Re-throw the error to ensure the caller is aware of the failure
+  }
 }

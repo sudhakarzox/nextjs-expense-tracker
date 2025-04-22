@@ -7,7 +7,6 @@ steps:
       - |
         gcloud secrets versions access latest --secret=MONGODB_URI --format='get(payload.data)' | tr '_-' '/+' | base64 -d > mongo_uri.txt
         echo "MongoDB URI retrieved and stored in mongo_uri.txt"
-        cat mongo_uri.txt
     env:
       - MONGODB_URI=$(cat mongo_uri.txt)
 
