@@ -1,13 +1,15 @@
 steps:
-  # 1 & 2. Fetch the secret and build the Docker image in one bash script
-  - name: gcr.io/cloud-builders/gcloud
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        MONGO_URI=$(gcloud secrets versions access latest --secret=MONGODB_URI --format='get(payload.data)' | tr '_-' '/+' | base64 -d)
-        echo "Mongo URI retrieved"
-        docker build -t gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA --build-arg MONGODB_URI="$MONGO_URI" .
+	 - name: 'gcr.io/cloud-builders/docker'
+  	 entrypoint: 'bash'
+  	 args: [
+    	 '-c',
+    	 'docker build --build-arg MY_SECRET_ARG=$$MONGODB_URL -t my-image .'
+  	 ]
+  	 secretEnv: ['MONGODB_URL']
+availableSecrets:
+  secretManager:
+  - versionName: projects/710919758521/secrets/MONGODB_URI/versions/2
+    env: 'MONGODB_URL'
 
   # 3. Push the Docker image to Artifact/Container Registry
   - name: gcr.io/cloud-builders/docker
