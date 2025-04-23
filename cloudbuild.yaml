@@ -5,7 +5,7 @@ steps:
       '-c',
       'docker build --build-arg MONGODB_URI=$$MONGODB_URI -t my-image .'
     ]
-    secretEnv: ['MONGODB_URL']
+    secretEnv: ['MONGODB_URI']
 
   - name: gcr.io/cloud-builders/docker
     args:
