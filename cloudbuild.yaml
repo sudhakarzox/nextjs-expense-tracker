@@ -3,7 +3,7 @@ steps:
     entrypoint: 'bash'
     args: [
       '-c',
-      'docker build --build-arg MONGODB_URI=$$MONGODB_URI -t my-image .'
+      'docker build --build-arg MONGODB_URI=$$MONGODB_URI -t gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA .'
     ]
     secretEnv: ['MONGODB_URI']
 
