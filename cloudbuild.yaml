@@ -15,7 +15,7 @@ steps:
 availableSecrets:
   secretManager:
   - versionName: projects/710919758521/secrets/MONGODB_URI/latest
-    env: 'MONGODB_URL'
+    env: MONGODB_URL
 
   # 3. Push the Docker image to Artifact/Container Registry
 
