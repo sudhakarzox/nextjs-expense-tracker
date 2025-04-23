@@ -7,16 +7,18 @@ steps:
     ]
     secretEnv: ['MONGODB_URL']
 
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA
+
 availableSecrets:
   secretManager:
   - versionName: projects/710919758521/secrets/MONGODB_URI/versions/2
     env: 'MONGODB_URL'
 
   # 3. Push the Docker image to Artifact/Container Registry
-  - name: gcr.io/cloud-builders/docker
-    args:
-      - push
-      - gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA
+
 
 options:
   logging: CLOUD_LOGGING_ONLY
