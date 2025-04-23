@@ -3,7 +3,7 @@ steps:
     entrypoint: 'bash'
     args: [
       '-c',
-      'docker build --build-arg MY_SECRET_ARG=$$MONGODB_URL -t my-image .'
+      'docker build --build-arg MONGODB_URL=$$MONGODB_URL -t my-image .'
     ]
     secretEnv: ['MONGODB_URL']
 
