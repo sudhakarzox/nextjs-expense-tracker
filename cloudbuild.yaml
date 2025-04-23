@@ -1,11 +1,12 @@
 steps:
-	 - name: 'gcr.io/cloud-builders/docker'
-  	 entrypoint: 'bash'
-  	 args: [
-    	 '-c',
-    	 'docker build --build-arg MY_SECRET_ARG=$$MONGODB_URL -t my-image .'
-  	 ]
-  	 secretEnv: ['MONGODB_URL']
+	- name: 'gcr.io/cloud-builders/docker'
+  	entrypoint: 'bash'
+  	args: [
+    	'-c',
+    	'docker build --build-arg MY_SECRET_ARG=$$MONGODB_URL -t my-image .'
+    ]
+  	secretEnv: ['MONGODB_URL']
+	 
 availableSecrets:
   secretManager:
   - versionName: projects/710919758521/secrets/MONGODB_URI/versions/2
