@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SelectWrapper from "./Wrapper/SelectWrapper"; // Import SelectWrapper
 
 type Transaction = {
   _id: string;
@@ -40,7 +41,7 @@ export default function TransactionList() {
         const data = await res.json();
 
         // Sort transactions by date (newest first)
-        const sortedTransactions = data.data.sort(
+        const sortedTransactions = data.data?.sort(
           (a: Transaction, b: Transaction) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
 
@@ -58,7 +59,7 @@ export default function TransactionList() {
 
   // Filter transactions based on selected filters
   useEffect(() => {
-    const filtered = transactions.filter((txn) => {
+    const filtered = transactions?.filter((txn) => {
       return (
         (selectedAccount ? txn.account._id === selectedAccount : true) &&
         (selectedCategory ? txn.category._id === selectedCategory : true) &&
@@ -74,13 +75,13 @@ export default function TransactionList() {
   // Calculate the transactions to display for the current page
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
-  const currentTransactions = filteredTransactions.slice(
+  const currentTransactions = filteredTransactions?.slice(
     indexOfFirstTransaction,
     indexOfLastTransaction
   );
 
   // Calculate total pages
-  const totalPages = Math.ceil(filteredTransactions.length / transactionsPerPage);
+  const totalPages = Math.ceil(filteredTransactions?.length / transactionsPerPage);
 
   // Handle page change
   const handlePageChange = (page: number) => {
@@ -91,10 +92,10 @@ export default function TransactionList() {
 
   // Generate unique accounts and categories
   const uniqueAccounts = Array.from(
-    new Map(transactions.map((txn) => [txn.account._id, txn.account])).values()
+    new Map(transactions?.map((txn) => [txn.account._id, txn.account])).values()
   );
   const uniqueCategories = Array.from(
-    new Map(transactions.map((txn) => [txn.category._id, txn.category])).values()
+    new Map(transactions?.map((txn) => [txn.category._id, txn.category])).values()
   );
 
   return (
@@ -103,52 +104,46 @@ export default function TransactionList() {
 
       {/* Filters */}
       <div className="space-y-3 mb-4">
-        <select
+        <SelectWrapper
+          label="Filter by Account"
           value={selectedAccount}
           onChange={(e) => setSelectedAccount(e.target.value)}
-          className="w-full border p-2 rounded"
-        >
-          <option value="">Filter by Account</option>
-          {uniqueAccounts.map((account) => (
-            <option key={account._id} value={account._id}>
-              {account.name}
-            </option>
-          ))}
-        </select>
+          options={uniqueAccounts.map((account) => ({
+            value: account._id,
+            label: account.name,
+          }))}
+        />
 
-        <select
+        <SelectWrapper
+          label="Filter by Category"
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="w-full border p-2 rounded"
-        >
-          <option value="">Filter by Category</option>
-          {uniqueCategories.map((category) => (
-            <option key={category._id} value={category._id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
+          options={uniqueCategories.map((category) => ({
+            value: category._id,
+            label: category.name,
+          }))}
+        />
 
-        <select
+        <SelectWrapper
+          label="Filter by Type"
           value={selectedType}
           onChange={(e) => setSelectedType(e.target.value)}
-          className="w-full border p-2 rounded"
-        >
-          <option value="">Filter by Type</option>
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-        </select>
+          options={[
+            { value: "income", label: "Income" },
+            { value: "expense", label: "Expense" },
+          ]}
+        />
 
-        <select
+        <SelectWrapper
+          label="Filter by Status"
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
-          className="w-full border p-2 rounded"
-        >
-          <option value="">Filter by Status</option>
-          <option value="open">Open</option>
-          <option value="completed">Completed</option>
-          <option value="pending">Pending</option>
-        </select>
+          options={[
+            { value: "open", label: "Open" },
+            { value: "completed", label: "Completed" },
+            { value: "pending", label: "Pending" },
+          ]}
+        />
 
         <input
           type="date"
@@ -168,7 +163,7 @@ export default function TransactionList() {
             {currentTransactions.map((txn) => (
               <li
                 key={txn._id}
-                className="border p-3 rounded bg-white shadow-sm flex flex-col"
+                className=" p-3 rounded dark:bg-gray-700 shadow-sm flex flex-col"
               >
                 <div className="flex justify-between items-center">
                   <span className="font-medium">{txn.category.name}</span>
@@ -188,9 +183,7 @@ export default function TransactionList() {
                 )}
                 <div className="text-xs text-gray-400 mt-1">
                   {new Date(txn.date).toDateString()}{" "}
-                  <span className={`text-sm px-2 py-1 rounded`}>
-                    {txn.status}
-                  </span>
+                  <span className={`text-sm px-2 py-1 rounded`}>{txn.status}</span>
                 </div>
               </li>
             ))}

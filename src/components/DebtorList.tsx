@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ListWrapper from "./Wrapper/ListWrapper";
 
 type Debtor = {
   _id: string;
@@ -12,7 +13,7 @@ export default function DebtorList() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchCategories() {
+    async function fetchDebtors() {
       try {
         const res = await fetch("/api/debtors");
         const data = await res.json();
@@ -29,25 +30,20 @@ export default function DebtorList() {
       }
     }
 
-    fetchCategories();
+    fetchDebtors();
   }, []);
 
   return (
-    <div className="mt-6">
-      <h3 className="text-lg font-semibold mb-2">Debtor</h3>
-      {loading ? (
-        <p>Loading...</p>
-      ) : debtors.length === 0 ? (
-        <p>No debtors found.</p>
-      ) : (
-        <ul className="space-y-2">
-          {debtors.map((cat) => (
-            <li key={cat._id} className="border p-2 rounded bg-gray-50">
-              <span>{cat.name}</span>
-            </li>
-          ))}
-        </ul>
+    <ListWrapper
+      title="Debtor"
+      items={debtors}
+      loading={loading}
+      emptyMessage="No debtors found."
+      renderItem={(debtor) => (
+        <li key={debtor._id} className="p-2 rounded bg-gray-700">
+          <span>{debtor.name}</span>
+        </li>
       )}
-    </div>
+    />
   );
 }

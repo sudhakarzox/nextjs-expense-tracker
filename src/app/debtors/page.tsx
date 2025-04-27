@@ -1,12 +1,13 @@
 import DebtorForm from "@/components/DebtorForm";
 import DebtorList from "@/components/DebtorList";
+import PageWrapper from "@/components/Wrapper/PageWrapper";
 
 
 export default function DebtorsPage() {
   return (
-    <div className="min-h-full rounded bg-gray-100 p-3">
+    <PageWrapper>
       <DebtorForm />
       <DebtorList />
-    </div>
+    </PageWrapper>
   );
 }

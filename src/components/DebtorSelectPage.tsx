@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import DTransactions from '@/components/DTransactions';
+import SelectWrapper from '@/components/Wrapper/SelectWrapper'; // Import SelectWrapper
 
 type Debtor = {
   _id: string;
@@ -27,20 +28,18 @@ export default function DebtorSelectPage() {
 
   return (
     <div className="max-w-3xl mx-auto mt-0">
-      <h2 className="text-2xl font-bold mb-4">Select a Debtor</h2>
+      <h2 className="text-xl font-bold mb-4">Select a Debtor</h2>
 
-      <select
-        className="w-full p-2 border rounded mb-6"
+      {/* Use SelectWrapper for the dropdown */}
+      <SelectWrapper
+        label="Debtor"
+        value={selectedDebtorId || ""}
         onChange={(e) => setSelectedDebtorId(e.target.value)}
-        defaultValue=""
-      >
-        <option value="" disabled>Select debtor...</option>
-        {debtors.map((debtor) => (
-          <option key={debtor._id} value={debtor._id}>
-            {debtor.name}
-          </option>
-        ))}
-      </select>
+        options={debtors.map((debtor) => ({
+          value: debtor._id,
+          label: debtor.name,
+        }))}
+      />
 
       {selectedDebtorId && <DTransactions debtorId={selectedDebtorId} />}
     </div>

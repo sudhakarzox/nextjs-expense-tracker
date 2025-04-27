@@ -1,8 +1,9 @@
 import DebtorSelectPage from '@/components/DebtorSelectPage';
+import PageWrapper from '@/components/Wrapper/PageWrapper';
 
 export default function DebtorPage() {
   return( 
-    <div className="min-h-full bg-gray-100 p-6">
+    <PageWrapper>
         <DebtorSelectPage />
-    </div>);
+    </PageWrapper>);
 }

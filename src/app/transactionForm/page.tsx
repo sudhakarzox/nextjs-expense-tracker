@@ -1,10 +1,11 @@
+import PageWrapper from "@/components/Wrapper/PageWrapper";
 import TransactionForm from "@/components/TransactionForm";
 
 
 export default function TransactionsPage() {
   return (
-    <div className="min-h-full bg-gray-100 rounded p-3">
+    <PageWrapper>
       <TransactionForm />
-    </div>
+    </PageWrapper>
   );
 }

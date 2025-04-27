@@ -56,16 +56,16 @@ export default function Home() {
     //   </footer>
     // </div>
     
-    <div className="flex flex-col items-center justify-center space-y-6">
-      <h2 className="text-3xl font-bold text-center text-gray-700 mt-6">
+    <div className="flex flex-col items-center justify-center space-y-6 bg-black text-gray-150 min-h-screen">
+      <h2 className="text-3xl font-bold text-center text-gray-250 mt-6">
         Track your expenses effortlessly
       </h2>
-      <p className="text-gray-600 text-lg text-center max-w-xl">
+      <p className="text-gray-100 text-lg text-center max-w-xl">
         Easily manage your expenses and understand your spending habits.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full max-w-4xl">
-        <HomeCard title="Transaction Form" href="/transactionForm" desc="View your transactions" />
+        <HomeCard title="Transaction Form" href="/transactionForm" desc="Add your transactions" />
         <HomeCard title="Transactions" href="/transactions-list" desc="View your transactions" />
         <HomeCard title="Categories" href="/categories" desc="Manage your spending categories" />
         <HomeCard title="Add Account" href="/accounts" desc="Create and manage accounts" />
@@ -88,11 +88,13 @@ function HomeCard({
   desc: string;
 }) {
   return (
+    <div className="w-full rounded-lg border bg-gray-900  shadow-gray-50 border-gray-500 p-6 hover:shadow-sm transition hover:bg-gray-100  hover:text-black">
     <a
       href={href}
-      className="w-full rounded-lg border p-6 shadow hover:shadow-md transition hover:bg-gray-50"
+      
     >
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-gray-500 text-sm">{desc}</p>
+      <p className="text-sm">{desc}</p>
     </a>
+    </div>
   );}

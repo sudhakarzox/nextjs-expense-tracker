@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import FormWrapper from "./Wrapper/FormWrapper";
+import InputWrapper from "./Wrapper/InputWrapper";
 
 export default function DebtorForm() {
   const [name, setName] = useState("");
@@ -35,15 +37,13 @@ export default function DebtorForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">
-      <h2 className="text-xl font-bold">Add Debtor</h2>
-
-      <input
+    <FormWrapper title="Add Debtor" onSubmit={handleSubmit}>
+      <InputWrapper
+        label="Debtor Name"
         type="text"
-        placeholder="Debtor name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="w-full border p-2 rounded"
+        placeholder="Enter debtor name"
         required
       />
 
@@ -56,6 +56,6 @@ export default function DebtorForm() {
       </button>
 
       {message && <p className="text-sm text-green-600">{message}</p>}
-    </form>
+    </FormWrapper>
   );
 }

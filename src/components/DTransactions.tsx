@@ -46,15 +46,15 @@ export default function DTransactions({ debtorId }: { debtorId: string }) {
   if (!transactions.length) return <p>No transactions found for this debtor.</p>;
 
   return (
-    <div className="w-full max-w-3xl mx-auto mt-8">
+    <div className="w-full max-w-xl mx-auto mt-8">
       <h2 className="text-xl font-bold mb-4">Debtor Transactions</h2>
       <div className="space-y-4">
         {transactions.map((item) => (
-          <div key={item._id} className="p-4 border bg-white rounded shadow-sm">
+          <div key={item._id} className="p-4 border bg-white dark:bg-gray-700 rounded shadow-sm">
             <div className="flex justify-between">
               <span className="font-medium">Type:</span>
-              <span className={item.transaction.type === 'income' ? 'text-green-600' : 'text-red-600'}>
-                {item.transaction.type.toUpperCase()}
+              <span >
+                {item.transaction.type}
               </span>
             </div>
             <div className="flex justify-between">
@@ -63,7 +63,7 @@ export default function DTransactions({ debtorId }: { debtorId: string }) {
             </div>
             <div className="flex justify-between">
               <span className="font-medium">Status:</span>
-              <span>{item.transaction.status}</span>
+              <span className={item.transaction.status === 'completed' ? 'text-green-600' : 'text-red-600'}>{item.transaction.status.toUpperCase()}</span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium">Category:</span>

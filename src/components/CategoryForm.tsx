@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import FormWrapper from "@/components/Wrapper/FormWrapper";
+import InputWrapper from "@/components/Wrapper/InputWrapper";
 
 export default function CategoryForm() {
   const [name, setName] = useState("");
@@ -35,15 +37,13 @@ export default function CategoryForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">
-      <h2 className="text-xl font-bold">Add Category</h2>
-
-      <input
+    <FormWrapper title="Add Category" onSubmit={handleSubmit}>
+      <InputWrapper
+        label="Category Name"
         type="text"
-        placeholder="Category name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="w-full border p-2 rounded"
+        placeholder="Enter category name"
         required
       />
 
@@ -56,6 +56,6 @@ export default function CategoryForm() {
       </button>
 
       {message && <p className="text-sm text-green-600">{message}</p>}
-    </form>
+    </FormWrapper>
   );
 }

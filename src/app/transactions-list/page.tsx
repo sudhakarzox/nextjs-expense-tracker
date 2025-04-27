@@ -1,9 +1,10 @@
+import PageWrapper from "@/components/Wrapper/PageWrapper";
 import TransactionList from "@/components/TransactionList";
 
 export default function TransactionsPage() {
   return (
-    <div className="min-h-screen rounded bg-gray-100 p-4">
+    <PageWrapper>
       <TransactionList />
-    </div>
+    </PageWrapper>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ListWrapper from "./Wrapper/ListWrapper"; // Import ListWrapper
 
 type Category = {
   _id: string;
@@ -8,7 +9,7 @@ type Category = {
 };
 
 export default function CategoryList() {
-  const [categories, setcategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,7 +19,7 @@ export default function CategoryList() {
         const data = await res.json();
 
         if (data.success) {
-          setcategories(data.data); // Use the `data` field from the API response
+          setCategories(data.data); // Use the `data` field from the API response
         } else {
           console.error("Failed to load categories:", data.error);
         }
@@ -33,21 +34,16 @@ export default function CategoryList() {
   }, []);
 
   return (
-    <div className="mt-6">
-      <h3 className="text-lg font-semibold mb-2">Categories</h3>
-      {loading ? (
-        <p>Loading...</p>
-      ) : categories.length === 0 ? (
-        <p>No categories found.</p>
-      ) : (
-        <ul className="space-y-2">
-          {categories.map((cat) => (
-            <li key={cat._id} className="border p-2 rounded bg-gray-50">
-              <span>{cat.name}</span>
-            </li>
-          ))}
-        </ul>
+    <ListWrapper
+      title="Categories"
+      items={categories}
+      loading={loading}
+      emptyMessage="No categories found."
+      renderItem={(category) => (
+        <li key={category._id} className="p-2 dark:bg-gray-700 rounded">
+          <span>{category.name}</span>
+        </li>
       )}
-    </div>
+    />
   );
 }
