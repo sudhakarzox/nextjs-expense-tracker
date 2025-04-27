@@ -1,33 +1,24 @@
 steps:
-  # 1. Access the secret from Secret Manager and store it in a file
-  - name: gcr.io/cloud-builders/gcloud
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        gcloud secrets versions access latest --secret=MONGODB_URI --format='get(payload.data)' | tr '_-' '/+' | base64 -d > mongo_uri.txt
-        echo "MongoDB URI retrieved and stored in mongo_uri.txt"
-    env:
-      - MONGODB_URI=$(cat mongo_uri.txt)
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: [
+      '-c',
+      'docker build --build-arg MONGODB_URI=$$MONGODB_URI -t gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA .'
+    ]
+    secretEnv: ['MONGODB_URI']
 
-  # 2. Build the Docker image
-  - name: gcr.io/cloud-builders/docker
-    args:
-      - build
-      - -t
-      - gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA # Replace with your desired image name and 
-      - --build-arg 
-      - MONGODB_URI=$(cat mongo_uri.txt) # Pass the MongoDB URI as a build argument
-      - .
-    env:
-      - MONGODB_URI=$(cat mongo_uri.txt)
-
-  # 3. Push the Docker image to Artifact Registry (or Container Registry)
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA # Replace with your desired image name and tag
+      - gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA
 
-# Optional: Configure logging if you're using a service account
+availableSecrets:
+  secretManager:
+  - versionName: projects/710919758521/secrets/MONGODB_URI/versions/latest
+    env: MONGODB_URI
+
+  # 3. Push the Docker image to Artifact/Container Registry
+
+
 options:
   logging: CLOUD_LOGGING_ONLY
