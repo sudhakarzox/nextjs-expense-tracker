@@ -14,6 +14,7 @@ import {
   Pie,
   Cell,
 } from 'recharts';
+import SelectWrapper from './Wrapper/SelectWrapper';
 
 type Transaction = {
   _id: string;
@@ -32,6 +33,7 @@ export default function ReportPage() {
   const [toDate, setToDate] = useState<string>('');
   const [groupBy, setGroupBy] = useState<'category' | 'month'>('category');
   const [chartType, setChartType] = useState<'bar' | 'pie'>('bar');
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -95,6 +97,69 @@ export default function ReportPage() {
         </button>
       </div>
 
+      {/* Filters */}
+      <div className="mb-2">
+        <button
+          className="w-full px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded text-left font-medium flex items-center justify-between"
+          onClick={() => setFiltersOpen((prev) => !prev)}
+        >
+          <span>Filters</span>
+          <span>{filtersOpen ? "▲" : "▼"}</span>
+        </button>
+        {filtersOpen && (
+        <div className="mt-10 space-y-4">
+          <div className="flex flex-wrap gap-4 justify-center">
+            
+            <SelectWrapper
+                label="Filter by Income/Expense"
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value as 'all' | 'income' | 'expense')}
+                options={[
+                  { value: 'all', label: 'All' },
+                  { value: 'income', label: 'Income' },
+                  { value: 'expense', label: 'Expense' },
+                ]}
+              />
+            <SelectWrapper
+                label="Group by Category/Date"
+                value={groupBy}
+                onChange={(e) => setGroupBy(e.target.value as 'category' | 'month')}
+                options={[
+                  { value: 'category', label: 'Group by Category' },
+                  { value: 'month', label: 'Group by Month' },
+                ]}
+              />
+
+            <div className="flex flex-col items-start">
+              <span className="text-sm mb-1">From Date</span>
+              <input
+                  type="date"
+                  className="border px-4 py-2 rounded"
+                  value={fromDate}
+                  onChange={(e) => setFromDate(e.target.value)}
+              />
+              </div>
+
+              <div className="flex flex-col items-start">
+              <span className="text-sm mb-1">From Date</span>
+                  <input
+                      type="date"
+                      className="border px-4 py-2 rounded"
+                      value={toDate}
+                      onChange={(e) => setToDate(e.target.value)}
+                  />
+              </div>
+          </div>
+
+          {chartData.length > 0 && (
+            <p className="text-center text-lg font-semibold mt-4">
+              Total: ₹{total.toLocaleString()}
+            </p>
+          )}
+        </div>
+        )}
+      </div>
+
       {/* Chart */}
       <div className="w-full h-[400px]">
         {chartType === 'bar' ? (
@@ -133,54 +198,7 @@ export default function ReportPage() {
         )}
       </div>
 
-      {/* Filters */}
-      <div className="mt-10 space-y-4">
-        <div className="flex flex-wrap gap-4 justify-center">
-          <select
-            className="border px-4 py-2 rounded"
-            value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value as 'all' | 'income' | 'expense')}
-          >
-            <option value="all">All</option>
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
-          </select>
-
-          <select
-            className="border px-4 py-2 rounded"
-            value={groupBy}
-            onChange={(e) => setGroupBy(e.target.value as 'category' | 'month')}
-          >
-            <option value="category">Group by Category</option>
-            <option value="month">Group by Month</option>
-          </select>
-          <div className="flex flex-col items-start">
-            <span className="text-sm mb-1">From Date</span>
-            <input
-                type="date"
-                className="border px-4 py-2 rounded"
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-            />
-            </div>
-
-            <div className="flex flex-col items-start">
-            <span className="text-sm mb-1">From Date</span>
-                <input
-                    type="date"
-                    className="border px-4 py-2 rounded"
-                    value={toDate}
-                    onChange={(e) => setToDate(e.target.value)}
-                />
-            </div>
-        </div>
-
-        {chartData.length > 0 && (
-          <p className="text-center text-lg font-semibold mt-4">
-            Total: ₹{total.toLocaleString()}
-          </p>
-        )}
-      </div>
+      
     </div>
   );
 }

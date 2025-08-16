@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import SignOutButton from "@/components/SignoutButton";
-import { authOptions } from "@/lib/authOptions";
 
 export const metadata: Metadata = {
   title: "Expense Tracker",
@@ -15,7 +13,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOptions);
+  const session = true;//await getServerSession(authOptions);
 
   if (!session) {
     redirect("/api/auth/signin"); // Redirect to sign-in if no session

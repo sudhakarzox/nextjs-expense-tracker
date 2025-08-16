@@ -1,4 +1,5 @@
 import React from "react";
+import LoadingAnime from "../LoadingAnim";
 
 type ListWrapperProps = {
   title: string;
@@ -21,7 +22,7 @@ export default function ListWrapper({
     <div className={`mt-6 ${className}`}>
       <h3 className="text-lg font-semibold mb-2">{title}</h3>
       {loading ? (
-        <p>Loading...</p>
+        <LoadingAnime></LoadingAnime>
       ) : items.length === 0 ? (
         <p>{emptyMessage}</p>
       ) : (

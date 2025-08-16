@@ -1,19 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import SelectWrapper from './Wrapper/SelectWrapper';
+import LoadingAnime from './LoadingAnim';
 
 type TransactionItem = {
   _id: string;
   transaction: {
     _id: string;
+    to: string;
     amount: number;
     type: 'income' | 'expense';
-    //refere to category model
-    // category: mongoose.Schema.Types.ObjectId;
-     category: {
+    category: {
       name: string;
       _id: string;
-     };
+    };
     status: 'pending' | 'completed' | 'open';
   };
   expectedReturnDate?: string;
@@ -24,6 +25,14 @@ type TransactionItem = {
 export default function DTransactions({ debtorId }: { debtorId: string }) {
   const [transactions, setTransactions] = useState<TransactionItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState<string>('open');
+
+  const statusOptions = [
+    { value: '', label: 'All' },
+    { value: 'completed', label: 'Completed' },
+    { value: 'pending', label: 'Pending' },
+    { value: 'open', label: 'Open' },
+  ];
 
   useEffect(() => {
     async function fetchTransactions() {
@@ -41,19 +50,30 @@ export default function DTransactions({ debtorId }: { debtorId: string }) {
     fetchTransactions();
   }, [debtorId]);
 
-  if (loading) return <p>Loading transactions...</p>;
+  const filteredTransactions = statusFilter
+    ? transactions.filter((item) => item.transaction.status === statusFilter)
+    : transactions;
 
-  if (!transactions.length) return <p>No transactions found for this debtor.</p>;
+  if (loading) return <LoadingAnime title='Loading transactions...'/>;
+
+  if (!filteredTransactions.length) return <p>No transactions found for this debtor.</p>;
 
   return (
     <div className="w-full max-w-xl mx-auto mt-8">
       <h2 className="text-xl font-bold mb-4">Debtor Transactions</h2>
+      <SelectWrapper
+        label="Status"
+        value={statusFilter}
+        onChange={(e) => setStatusFilter(e.target.value)}
+        options={statusOptions}
+        className="mb-4"
+      />
       <div className="space-y-4">
-        {transactions.map((item) => (
+        {filteredTransactions.map((item) => (
           <div key={item._id} className="p-4 border bg-white dark:bg-gray-700 rounded shadow-sm">
             <div className="flex justify-between">
               <span className="font-medium">Type:</span>
-              <span >
+              <span>
                 {item.transaction.type}
               </span>
             </div>
@@ -63,7 +83,9 @@ export default function DTransactions({ debtorId }: { debtorId: string }) {
             </div>
             <div className="flex justify-between">
               <span className="font-medium">Status:</span>
-              <span className={item.transaction.status === 'completed' ? 'text-green-600' : 'text-red-600'}>{item.transaction.status.toUpperCase()}</span>
+              <span className={item.transaction.status === 'completed' ? 'text-green-600' : 'text-red-600'}>
+                {item.transaction.status.toUpperCase()}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium">Category:</span>
@@ -80,6 +102,10 @@ export default function DTransactions({ debtorId }: { debtorId: string }) {
             <div className="flex justify-between">
               <span className="font-medium">Credited Till Date:</span>
               <span>₹{item.creditedTillDate ?? 0}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium">Reason: </span>
+              <span>{item.transaction.to}</span>
             </div>
           </div>
         ))}

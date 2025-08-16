@@ -14,18 +14,18 @@ type TransactionRec = {
 };
 
 
-export async function GET() {
-  try {
-    await connectDB();
-    const dtrans = await DTrans.find({})
-      .populate('debtor')
-      .populate('transactions.transaction');
+// export async function GET() {
+//   try {
+//     await connectDB();
+//     const dtrans = await DTrans.find({})
+//       .populate('debtor')
+//       .populate('transactions.transaction');
 
-    return NextResponse.json({ success: true, data: dtrans });
-  } catch (error) {
-    return NextResponse.json({ success: false, error }, { status: 500 });
-  }
-}
+//     return NextResponse.json({ success: true, data: dtrans });
+//   } catch (error) {
+//     return NextResponse.json({ success: false, error }, { status: 500 });
+//   }
+// }
 
 
 

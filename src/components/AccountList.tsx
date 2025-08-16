@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import LoadingAnime from "./LoadingAnim";
 
 type Account = {
   _id: string;
@@ -37,7 +38,7 @@ export default function AccountList() {
     <div className="mt-6 p-2">
       <h3 className="text-lg font-semibold mb-2">Accounts</h3>
       {loading ? (
-        <p>Loading...</p>
+        <LoadingAnime/>
       ) : accounts.length === 0 ? (
         <p>No accounts found.</p>
       ) : (

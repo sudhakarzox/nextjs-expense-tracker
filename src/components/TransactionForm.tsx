@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import FormWrapper from "./Wrapper/FormWrapper";
 import InputWrapper from "./Wrapper/InputWrapper";
 import SelectWrapper from "./Wrapper/SelectWrapper";
+import Button from "./Wrapper/Button";
 
 type Category = {
   _id: string;
@@ -26,7 +28,13 @@ type TransactionEntry = {
   _id: string;
 };
 
-export default function TransactionForm() {
+type TransactionFormProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  transaction?: any; // Pass transaction for edit, undefined for create
+};
+
+export default function TransactionForm({ transaction }: TransactionFormProps) {
+  const isEdit = !!transaction?._id;
   const [type, setType] = useState<"income" | "expense">("expense");
   const [amount, setAmount] = useState<number | "">("");
   const [account, setAccount] = useState<string>("");
@@ -44,6 +52,7 @@ export default function TransactionForm() {
   const [expectedReturnDate, setExpectedReturnDate] = useState<string>("");
   const [dtransEntries, setDtransEntries] = useState<TransactionEntry[]>([]);
   const [selecteddtransId, setSelecteddtransId] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchData() {
@@ -79,6 +88,22 @@ export default function TransactionForm() {
     loadTransactions();
   }, [selectedDebtor]);
 
+  // Set initial values for edit mode
+  useEffect(() => {
+    if (isEdit && transaction) {
+      setLoading(true);
+      setType(transaction.type?? "expense");
+      setAmount(transaction.amount);
+      setAccount(transaction.account?._id || "");
+      setDate(new Date(transaction.date).toISOString().split("T")[0]);
+      setTo(transaction.to || "");
+      setCategory(transaction.category?._id || "");
+      setStatus(transaction.status);
+      setLoading(false);
+    }
+  }, [
+    isEdit,transaction]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!amount || !category || !account || !date) return;
@@ -86,9 +111,12 @@ export default function TransactionForm() {
     setLoading(true);
     setMessage("");
 
+    const method = isEdit ? "PUT" : "POST";
+    const url = isEdit ? `/api/transactions/${transaction._id}` : "/api/transaction-with-dtrans";
+
     try {
-      const res = await fetch("/api/transaction-with-dtrans", {
-        method: "POST",
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type,
@@ -116,7 +144,12 @@ export default function TransactionForm() {
         setSelectedDebtor("");
         setDebtorTransaction(false);
         setExpectedReturnDate("");
-        setMessage("Transaction added!");
+        setMessage(isEdit ? "Transaction updated!" : "Transaction added!");
+        if (isEdit) {
+          setTimeout(() => {
+            router.back();
+          }, 500); // Wait 1s to show message before going back
+        }
       } else {
         setMessage("Failed to add transaction.");
       }
@@ -129,7 +162,10 @@ export default function TransactionForm() {
   }
 
   return (
-    <FormWrapper title="Add Transaction" onSubmit={handleSubmit}>
+    <FormWrapper
+      title={isEdit ? "Edit Transaction" : "Add Transaction"}
+      onSubmit={handleSubmit}
+    >
       <SelectWrapper
         label="Transaction Type"
         value={type}
@@ -138,6 +174,7 @@ export default function TransactionForm() {
           { value: "income", label: "Income" },
           { value: "expense", label: "Expense" },
         ]}
+        disabled={loading}
         required
       />
 
@@ -147,6 +184,7 @@ export default function TransactionForm() {
         value={amount}
         onChange={(e) => setAmount(Number(e.target.value))}
         placeholder="Enter amount"
+        disabled={loading}
         required
       />
 
@@ -155,6 +193,7 @@ export default function TransactionForm() {
         value={account}
         onChange={(e) => setAccount(e.target.value)}
         options={accounts.map((acc) => ({ value: acc._id, label: acc.name }))}
+        disabled={loading}
         required
       />
 
@@ -163,6 +202,7 @@ export default function TransactionForm() {
         type="date"
         value={date}
         onChange={(e) => setDate(e.target.value)}
+        disabled={loading}
         required
       />
 
@@ -171,6 +211,7 @@ export default function TransactionForm() {
         type="text"
         value={to}
         onChange={(e) => setTo(e.target.value)}
+        disabled={loading}
         placeholder="Enter recipient"
       />
 
@@ -179,33 +220,39 @@ export default function TransactionForm() {
         value={category}
         onChange={(e) => setCategory(e.target.value)}
         options={categories.map((cat) => ({ value: cat._id, label: cat.name }))}
+        disabled={loading}
         required
       />
 
       <SelectWrapper
         label="Status"
         value={status}
-        onChange={(e) => setStatus(e.target.value as "pending" | "completed" | "open")}
+        onChange={(e) =>
+          setStatus(e.target.value as "pending" | "completed" | "open")
+        }
         options={[
           { value: "completed", label: "Completed" },
           { value: "pending", label: "Pending" },
           { value: "open", label: "Open" },
         ]}
+        disabled={loading}
         required
       />
 
-      <div className="flex items-center space-x-2">
-        <label htmlFor="debtorTransaction" className="text-sm font-medium">
-          Is this a debtor transaction?
-        </label>
-        <input
-          type="checkbox"
-          id="debtorTransaction"
-          checked={debtorTransaction}
-          onChange={(e) => setDebtorTransaction(e.target.checked)}
-          className="w-4 h-4"
-        />
-      </div>
+      {!isEdit && (
+        <div className="flex items-center space-x-2">
+          <label htmlFor="debtorTransaction" className="text-sm font-medium">
+            Is this a debtor transaction?
+          </label>
+          <input
+            type="checkbox"
+            id="debtorTransaction"
+            checked={debtorTransaction}
+            onChange={(e) => setDebtorTransaction(e.target.checked)}
+            className="w-4 h-4"
+          />
+        </div>
+      )}
 
       {debtorTransaction && (
         <>
@@ -213,7 +260,11 @@ export default function TransactionForm() {
             label="Debtor"
             value={selectedDebtor}
             onChange={(e) => setSelectedDebtor(e.target.value)}
-            options={debtors.map((debtor) => ({ value: debtor._id, label: debtor.name }))}
+            options={debtors.map((debtor) => ({
+              value: debtor._id,
+              label: debtor.name,
+            }))}
+            disabled={loading}
             required
           />
 
@@ -224,8 +275,11 @@ export default function TransactionForm() {
               onChange={(e) => setSelecteddtransId(e.target.value)}
               options={dtransEntries.map((entry) => ({
                 value: entry._id,
-                label: `${new Date(entry.date).toDateString()} - ₹${entry.amount}`,
+                label: `${new Date(entry.date).toDateString()} - ₹${
+                  entry.amount
+                }`,
               }))}
+              disabled={loading}
             />
           )}
 
@@ -235,19 +289,20 @@ export default function TransactionForm() {
               type="date"
               value={expectedReturnDate}
               onChange={(e) => setExpectedReturnDate(e.target.value)}
+              disabled={loading}
               required
             />
           )}
         </>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-      >
-        {loading ? "Saving..." : "Add Transaction"}
-      </button>
+      <Button type="submit" loading={loading}>
+        {loading
+          ? "Saving..."
+          : isEdit
+          ? "Update Transaction"
+          : "Add Transaction"}
+      </Button>
 
       {message && <p className="text-sm text-green-600">{message}</p>}
     </FormWrapper>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import DTransactions from '@/components/DTransactions';
 import SelectWrapper from '@/components/Wrapper/SelectWrapper'; // Import SelectWrapper
+import LoadingAnime from './LoadingAnim';
 
 type Debtor = {
   _id: string;
@@ -24,7 +25,7 @@ export default function DebtorSelectPage() {
     fetchDebtors();
   }, []);
 
-  if (loading) return <p className="text-center mt-10">Loading debtors...</p>;
+  if (loading) return <LoadingAnime/>;
 
   return (
     <div className="max-w-3xl mx-auto mt-0">

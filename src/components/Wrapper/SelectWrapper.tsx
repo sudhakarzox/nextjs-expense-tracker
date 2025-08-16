@@ -1,11 +1,12 @@
 import React from "react";
 
 type SelectWrapperProps = {
-  label: string;
-  value: string;
+  label: string ;
+  value: string | number;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: { value: string; label: string }[];
+  options: { value: string | number; label: string }[];
   required?: boolean;
+  disabled?: boolean;
   className?: string;
 };
 
@@ -14,6 +15,7 @@ export default function SelectWrapper({
   value,
   onChange,
   options,
+  disabled = false,
   required = false,
   className = "",
 }: SelectWrapperProps) {
@@ -26,7 +28,9 @@ export default function SelectWrapper({
         value={value}
         onChange={onChange}
         required={required}
-        className="w-full border p-2 text-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-white-500"
+        disabled={disabled}
+        className={`"block w-full border p-2 text-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-white-500"
+          ${disabled ? "bg-gray-800 text-gray-500 cursor-not-allowed" : ""}`}
       >
         <option className="dark:bg-gray-700"  value="">Select {label.toLowerCase()}</option>
         {options.map((option) => (

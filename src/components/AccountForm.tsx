@@ -3,6 +3,7 @@
 import { useState } from "react";
 import FormWrapper from "./Wrapper/FormWrapper";
 import InputWrapper from "./Wrapper/InputWrapper";
+import Button from "./Wrapper/Button";
 
 export default function AccountForm() {
   const [name, setName] = useState("");
@@ -58,13 +59,12 @@ export default function AccountForm() {
         required
       />
 
-      <button
+      <Button
         type="submit"
-        disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        loading={loading}
       >
         {loading ? "Saving..." : "Add Account"}
-      </button>
+      </Button>
 
       {message && <p className="text-sm text-green-600">{message}</p>}
     </FormWrapper>

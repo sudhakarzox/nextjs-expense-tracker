@@ -1,4 +1,51 @@
+
 steps:
+  # 0. Step to run SonarScanner CLI for SonarCloud analysis
+# - name: 'docker.io/sonarsource/sonar-scanner-cli'
+#   entrypoint: '/bin/sh'
+#   args:
+#     [
+#       '-c',
+#       'sonar-scanner -Dsonar.projectKey=sudhakarzox_nextjs_expense_tracker \
+#                     -Dsonar.sources=. \
+#                     -Dsonar.host.url=https://sonarcloud.io \
+#                     -Dsonar.login=$$SONARCLOUD_TOKEN'
+#     ]
+
+# Wait for and check Quality Gate status — fail build if gate fails
+- name: 'gcr.io/cloud-builders/curl'
+  entrypoint: 'bash'
+  args:
+    [
+      '-c',
+      '
+      echo "Checking SonarCloud Quality Gate status..."
+
+      # Get most recent analysisId
+      analysisId=$$SONARCLOUD_TOKEN: \
+        "https://sonarcloud.io/api/ce/component?component=sudhakarzox_nextjs_expense_tracker" | \
+        jq -r ".current.id")
+
+      # Wait for analysis to complete and get Quality Gate status
+      status="PENDING"
+      while [ "$status" = "PENDING" ] || [ "$status" = "IN_PROGRESS" ]; do
+        sleep 5
+        status=$$SONARCLOUD_TOKEN: \
+          "https://sonarcloud.io/api/qualitygates/project_status?analysisId=$analysisId" | \
+          jq -r ".projectStatus.status")
+        echo "Quality Gate status: $status"
+      done
+
+      if [ "$status" != "OK" ]; then
+        echo "❌ Quality Gate failed. Blocking pipeline."
+        exit 1
+      else
+        echo "✅ Quality Gate passed."
+      fi
+      '
+    ]
+
+  # 1. Build the Docker image with the MongoDB URI as a build argument
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args: [
@@ -7,6 +54,7 @@ steps:
     ]
     secretEnv: ['MONGODB_URI']
 
+  # 2. Push the Docker image to Artifact/Container Registry
   - name: gcr.io/cloud-builders/docker
     args:
       - push
@@ -16,8 +64,8 @@ availableSecrets:
   secretManager:
   - versionName: projects/710919758521/secrets/MONGODB_URI/versions/latest
     env: MONGODB_URI
-
-  # 3. Push the Docker image to Artifact/Container Registry
+  - versionName: projects/710919758521/secrets/SONARCLOUD_TOKEN/versions/latest
+    env: SONARCLOUD_TOKEN
 
 
 options:
