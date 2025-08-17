@@ -22,13 +22,13 @@ steps:
         echo "Checking SonarCloud Quality Gate status..."
   
         # Get most recent analysisId
-        analysisId=$(curl -s -u $SONARCLOUD_TOKEN: "https://sonarcloud.io/api/ce/component?component=sudhakarzox_nextjs_expense_tracker" | jq -r ".current.id")
+        analysisId=$(curl -s -u $$SONARCLOUD_TOKEN: "https://sonarcloud.io/api/ce/component?component=sudhakarzox_nextjs_expense_tracker" | jq -r ".current.id")
   
         # Wait for analysis to complete and get Quality Gate status
         status="PENDING"
         while [ "$status" = "PENDING" ] || [ "$status" = "IN_PROGRESS" ]; do
           sleep 5
-          status=$(curl -s -u $SONARCLOUD_TOKEN: "https://sonarcloud.io/api/qualitygates/project_status?analysisId=$analysisId" | jq -r ".projectStatus.status")
+          status=$(curl -s -u $$SONARCLOUD_TOKEN: "https://sonarcloud.io/api/qualitygates/project_status?analysisId=$analysisId" | jq -r ".projectStatus.status")
           echo "Quality Gate status: $status"
         done
   
