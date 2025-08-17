@@ -44,7 +44,7 @@ steps:
         fi
         '
       ]
-      secretEnv: ['SONARCLOUD_TOKEN']
+    secretEnv: ['SONARCLOUD_TOKEN']
 
   # 1. Build the Docker image with the MongoDB URI as a build argument
   - name: 'gcr.io/cloud-builders/docker'
