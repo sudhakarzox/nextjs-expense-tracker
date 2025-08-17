@@ -64,7 +64,7 @@ availableSecrets:
   secretManager:
   - versionName: projects/710919758521/secrets/MONGODB_URI/versions/latest
     env: MONGODB_URI
-  - versionName: projects/710919758521/secrets/SONARCLOUD_TOKEN/versions/latest
+  - versionName: projects/710919758521/secrets/SONARCLOUD_TOKEN/versions/1
     env: SONARCLOUD_TOKEN
 
 
