@@ -16,30 +16,22 @@ steps:
   - name: 'gcr.io/cloud-builders/curl'
     entrypoint: 'bash'
     args:
-      [
-        '-c',
-        '
+      - '-c'
+      - |
         echo "Checking SonarCloud Quality Gate status..."
-  
-        # Get most recent analysisId
         analysisId=$(curl -s -u $$SONARCLOUD_TOKEN: "https://sonarcloud.io/api/ce/component?component=sudhakarzox_nextjs_expense_tracker" | jq -r ".current.analysisId")
-  
-        # Wait for analysis to complete and get Quality Gate status
         status="PENDING"
         while [ "$status" = "PENDING" ] || [ "$status" = "IN_PROGRESS" ]; do
           sleep 5
           status=$(curl -s -u $$SONARCLOUD_TOKEN: "https://sonarcloud.io/api/qualitygates/project_status?analysisId=$analysisId" | jq -r ".projectStatus.status")
           echo "Quality Gate status: $status"
         done
-  
         if [ "$status" != "OK" ]; then
           echo "❌ Quality Gate failed. Blocking pipeline."
           exit 1
         else
           echo "✅ Quality Gate passed."
         fi
-        '
-      ]
     secretEnv: ['SONARCLOUD_TOKEN']
 
   # 1. Build the Docker image with the MongoDB URI as a build argument
