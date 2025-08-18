@@ -18,6 +18,7 @@ steps:
     args:
       - '-c'
       - |
+        apt-get update && apt-get install -y jq
         echo "Checking SonarCloud Quality Gate status..."
         analysisId=$(curl -s -u $$SONARCLOUD_TOKEN: "https://sonarcloud.io/api/ce/component?component=sudhakarzox_nextjs_expense_tracker" | jq -r ".current.analysisId")
         status="PENDING"
