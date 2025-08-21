@@ -1,5 +1,5 @@
 # ---- Build stage ----
-FROM node:20-alpine3.1 AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
@@ -19,7 +19,7 @@ COPY src ./src
 RUN npm run build
 
 # ---- Production stage ----
-FROM node:20-alpine3.1
+FROM node:22-alpine
 
 # Create a non-root user and group for security
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
