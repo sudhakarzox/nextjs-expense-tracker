@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { redirect } from "next/navigation";
 import SignOutButton from "@/components/SignoutButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
+import Image from "next/image";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Expense Tracker",
@@ -13,7 +18,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = true;//await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect("/api/auth/signin"); // Redirect to sign-in if no session
@@ -36,6 +41,7 @@ export default async function RootLayout({
             <header className="w-full border bg-gray-900 text-white-400 px-6 py-4 shadow">
               <div className="max-w-6xl mx-auto flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Expense Tracker</h1>
+                <div className="flex items-center space-x-4">
                 <nav className="space-x-4 hidden sm:block">
                   <a href="/transactions-list" className="hover:underline">
                     Transactions
@@ -44,6 +50,17 @@ export default async function RootLayout({
                     Categories
                   </a>
                 </nav>
+                {session?.user?.image && (
+                  <Image
+                    src={session.user.image}
+                    alt={session.user.name ?? "User avatar"}
+                    width={40}  // Explicit width
+                    height={40} // Explicit height
+                    className="rounded-full border border-gray-700"
+                    priority // ensures avatar loads early, improving LCP
+                  />
+                )}
+                </div>
               </div>
             </header>
 

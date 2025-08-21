@@ -49,13 +49,42 @@ steps:
     args:
       - push
       - gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA
+  
+  # 3. Deploy Docker image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - run
+      - deploy
+      - next-exp                 
+      - --image
+      - gcr.io/$PROJECT_ID/next-exp:$COMMIT_SHA
+      - --region
+      - us-central1           
+      - --platform
+      - managed
+      - --allow-unauthenticated  # Remove for private endpoints
+      - --set-env-vars=NEXTAUTH_URL=https://next-exp-710919758521.us-central1.run.app,NODE_ENV=production,DB=expense-tracker
+      - --update-secrets=NEXTAUTH_SECRET=projects/$PROJECT_ID/secrets/NEXTAUTH_SECRET:latest,GOOGLE_CLIENT_SECRET=projects/$PROJECT_ID/secrets/GOOGLE_CLIENT_SECRET:latest,GOOGLE_CLIENT_ID=projects/$PROJECT_ID/secrets/GOOGLE_CLIENT_ID:latest
+    env:
+      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
+    secretEnv:
+      - NEXTAUTH_SECRET
+      - GOOGLE_CLIENT_SECRET
+      - GOOGLE_CLIENT_ID
 
 availableSecrets:
   secretManager:
-  - versionName: projects/710919758521/secrets/MONGODB_URI/versions/latest
+  - versionName: projects/$PROJECT_ID/secrets/MONGODB_URI/versions/latest
     env: MONGODB_URI
-  - versionName: projects/710919758521/secrets/SONARCLOUD_TOKEN/versions/1
+  - versionName: projects/$PROJECT_ID/secrets/SONARCLOUD_TOKEN/versions/1
     env: SONARCLOUD_TOKEN
+  - versionName: projects/$PROJECT_ID/secrets/NEXTAUTH_SECRET/versions/latest
+    env: NEXTAUTH_SECRET
+  - versionName: projects/$PROJECT_ID/secrets/GOOGLE_CLIENT_SECRET/versions/latest
+    env: GOOGLE_CLIENT_SECRET
+  - versionName: projects/$PROJECT_ID/secrets/GOOGLE_CLIENT_ID/versions/latest
+    env: GOOGLE_CLIENT_ID
 
 
 options:

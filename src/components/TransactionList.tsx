@@ -8,7 +8,7 @@ import LoadingAnime from "./LoadingAnim";
 type Transaction = {
   _id: string;
   type: "income" | "expense";
-  status: "open" | "completed" | "pending";
+  status: "open" | "completed";
   amount: number;
   to?: string;
   date: string; // ISO date string
@@ -177,7 +177,6 @@ export default function TransactionList() {
               options={[
                 { value: "open", label: "Open" },
                 { value: "completed", label: "Completed" },
-                { value: "pending", label: "Pending" },
               ]}
             />
 

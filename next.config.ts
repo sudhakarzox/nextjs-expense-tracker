@@ -16,4 +16,15 @@ const nextConfig: NextConfig = {
   },
 };
 
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com", // Google profile pictures
+      },
+    ],
+  },
+};
+
 export default withPWA(nextConfig);
