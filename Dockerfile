@@ -1,6 +1,6 @@
 # Dockerfile
 # ---- Build stage ----
-FROM node:18.16-alpine3.18  AS builder
+FROM node:19.8.0-alpine  AS builder
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ RUN npm run build
 
 
 # ---- Production stage ----
-FROM node:18.16-alpine3.18 
+FROM node:19.8.0-alpine 
 
 WORKDIR /app
 
