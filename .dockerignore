@@ -1,0 +1,34 @@
+# Node modules (should be installed inside the container)
+node_modules
+
+# Next.js build output and cache folders
+.next
+.out
+
+# Logs and temp files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Git files
+.git
+.gitignore
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+
+# Editor and OS files
+.vscode
+.DS_Store
+*.swp
+.idea
+
+# Tests and coverage
+tests
+coverage
+
+# Miscellaneous
+dist
