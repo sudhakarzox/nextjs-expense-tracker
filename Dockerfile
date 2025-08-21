@@ -11,7 +11,7 @@ COPY package-lock.json ./
 RUN npm ci --quiet
 
 # Copy source code explicitly
-COPY next.config.js ./
+COPY next.config.ts ./
 COPY public ./public
 COPY src ./src
 
@@ -34,7 +34,7 @@ RUN npm ci --only=production --quiet
 # Copy build output and public assets from builder stage
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/next.config.ts ./
 
 # Fix permissions for non-root user
 RUN chown -R appuser:appgroup /app
