@@ -25,7 +25,7 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 
-RUN npm install next --ignore-scripts
+RUN npm install --ignore-scripts next 
 
 # Create a non-root user and switch
 RUN addgroup -S nodejs && adduser -S nodeuser -G nodejs
