@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import SignOutButton from "@/components/SignoutButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
-import Image from "next/image";
+
 
 export const dynamic = "force-dynamic";
 
@@ -26,8 +26,8 @@ export default async function RootLayout({
 
 
   return (
-    <html lang="en" className="dark">
-      <head>
+    <html lang="en" className="dark" >
+    <head >     {/*  head monce? */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#10b981" />
         <link rel="icon" href="/icons/courthouse.png" />
@@ -51,13 +51,15 @@ export default async function RootLayout({
                   </a>
                 </nav>
                 {session?.user?.image && (
-                  <Image
+                  // <Image> from next/image gives CSP issues
+                  // eslint-disable-next-line @next/next/no-img-element 
+                  <img
                     src={session.user.image}
                     alt={session.user.name ?? "User avatar"}
-                    width={40}  // Explicit width
-                    height={40} // Explicit height
+                    width={40}
+                    height={40}
                     className="rounded-full border border-gray-700"
-                    priority // ensures avatar loads early, improving LCP
+                    loading="lazy"
                   />
                 )}
                 </div>

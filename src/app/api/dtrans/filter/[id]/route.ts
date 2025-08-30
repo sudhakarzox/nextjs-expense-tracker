@@ -18,7 +18,8 @@ export async function GET(
   const { id: debtorId } = await params;
 
   try {
-    const dTrans = await DTrans.findOne({ debtor: debtorId }).populate({
+    const dTrans = await DTrans.findOne({ debtor: debtorId })
+    .populate({
       path: 'transactions.transaction',
       model: Transaction,
     });

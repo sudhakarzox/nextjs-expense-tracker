@@ -13,10 +13,6 @@ export async function POST(req: Request) {
     if (!debtor) {
       return NextResponse.json({ success: false, message: 'Debtor not created' }, { status: 500 });
     }
-      // }else{
-    //   //initialize the debtor with an empty transaction list
-    //   await DTrans.create({ debtor: debtor._id, transactions: [] });
-    // }
 
     return NextResponse.json({ success: true, data: debtor }, { status: 201 });
   } catch (error) {

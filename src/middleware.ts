@@ -1,6 +1,7 @@
 // middleware.ts
 import { withAuth } from "next-auth/middleware"
 import { NextResponse } from "next/server";
+export const dynamic = "force-dynamic"
 
 export default withAuth(
   function middleware(req) {
@@ -26,9 +27,9 @@ export default withAuth(
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
   const cspHeader = `
   default-src 'self';
-  script-src 'self'  'nonce-${nonce}'  ${isDev ? `'unsafe-eval'` : ``};
-  style-src 'self' ${ isDev ? `'unsafe-inline'` : ``};
-  img-src 'self' https://lh3.googleusercontent.com https: data:;
+  script-src 'self' ${isDev ? "'unsafe-eval'" : ''} 'nonce-${nonce}'  ;
+  style-src 'self'  'nonce-${nonce}' ${isDev ? "'unsafe-inline'" : ''};
+  img-src 'self' https://lh3.googleusercontent.com data:;
   font-src 'self';
   object-src 'none';
   base-uri 'self';
@@ -72,8 +73,20 @@ export default withAuth(
 
 export const config = {
   matcher: [
-    // Match all request paths except static files
-    '/((?!api/auth|_next/static|_next/image|favicon.ico).*)',
-    
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+  
+    {
+      source:'/((?!api/auth|_next/static|_next/image|favicon.ico).*)',
+      missing: [
+        { type: 'header', key: 'next-router-prefetch' },
+        { type: 'header', key: 'purpose', value: 'prefetch' },
+      ],
+    },
   ],
 }

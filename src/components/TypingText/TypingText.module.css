@@ -1,0 +1,15 @@
+/* TypingText.css */
+.typing {
+  font-size: 1.125rem;
+  font-family: monospace;
+  font-weight: bold;
+  margin: 1rem;
+}
+.cursor {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}

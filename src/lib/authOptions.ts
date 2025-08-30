@@ -31,4 +31,16 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  events: {
+    async signIn({ user, account }) {
+      if (account?.provider === 'google') {
+        console.log(`User logged in with Google: ${user.email}`);
+        // Add your logging logic (e.g., DB insert) here
+      }
+    },
+    async signOut({ token }) {
+      console.log(`User logged out: ${token?.email}`);
+      // Add your logging logic (e.g., DB insert) here
+    },
+  },
 };

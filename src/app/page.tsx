@@ -1,6 +1,6 @@
 // import Image from "next/image";
 
-import { TypingText } from "@/components/TypingText";
+import { TypingText } from "@/components/TypingText/TypingText";
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
 
@@ -11,7 +11,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col items-center justify-center space-y-6 bg-black text-gray-150 min-h-screen">
       <TypingText text={`Hii, ${session ? session.user.name : "User"}...! `} />
-      <h2 className="text-3xl font-bold text-center text-gray-250 mt-6">
+      <h2 className="text-3xl font-bold text-center text-gray-250 m-5">
         Track your expenses effortlessly
       </h2>
       <p className="text-gray-100 text-lg text-center max-w-xl">

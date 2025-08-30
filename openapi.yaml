@@ -1,376 +1,280 @@
 openapi: 3.0.3
 info:
-  title: Expense Tracker API
+  title: Expense Tracking API
   version: 1.0.0
-  description: API for managing accounts, categories, debtors, transactions, and authentication.
+  description: API for managing accounts, categories, debtors, transactions, and debtor transactions (dtrans).
 
 servers:
-  - url: /api
+  - url: http://localhost:3000/api
 
 paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        "200":
+          description: API is healthy
+
   /accounts:
     get:
-      summary: Get all accounts
+      summary: List all accounts
       responses:
-        '200':
+        "200":
           description: List of accounts
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Account'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                type: array
+                items:
+                  $ref: "#/components/schemas/Account"
     post:
-      summary: Create a new account
+      summary: Create an account
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Account'
+              $ref: "#/components/schemas/Account"
       responses:
-        '201':
+        "201":
           description: Account created
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    $ref: '#/components/schemas/Account'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /accounts/{id}:
-    get:
-      summary: Get account by ID
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string }
-      responses:
-        '200':
-          description: Account details
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    $ref: '#/components/schemas/Account'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Account"
 
   /categories:
     get:
-      summary: Get all categories
+      summary: List all categories
       responses:
-        '200':
+        "200":
           description: List of categories
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Category'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
     post:
-      summary: Create a new category
+      summary: Create a category
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Category'
+              $ref: "#/components/schemas/Category"
       responses:
-        '201':
+        "201":
           description: Category created
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    $ref: '#/components/schemas/Category'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Category"
 
   /debtors:
     get:
-      summary: Get all debtors
+      summary: List all debtors
       responses:
-        '200':
+        "200":
           description: List of debtors
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Debtor'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                type: array
+                items:
+                  $ref: "#/components/schemas/Debtor"
     post:
-      summary: Create a new debtor
+      summary: Create a debtor
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Debtor'
+              $ref: "#/components/schemas/Debtor"
       responses:
-        '201':
+        "201":
           description: Debtor created
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    $ref: '#/components/schemas/Debtor'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /dtrans:
-    get:
-      summary: Get all debtor transactions
-      responses:
-        '200':
-          description: List of debtor transactions
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/DTrans'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    post:
-      summary: Create a new debtor transaction
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DTrans'
-      responses:
-        '201':
-          description: Debtor transaction created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    $ref: '#/components/schemas/DTrans'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /dtrans/{id}:
-    get:
-      summary: Get debtor transaction by ID
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string }
-      responses:
-        '200':
-          description: Debtor transaction details
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    $ref: '#/components/schemas/DTrans'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /dtrans/filter/{id}:
-    get:
-      summary: Get debtor transactions filtered by debtor ID
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: string }
-      responses:
-        '200':
-          description: Filtered debtor transactions
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  transactions:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/DTrans'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Debtor"
 
   /transactions:
     get:
-      summary: Get all transactions
+      summary: List all transactions
       responses:
-        '200':
+        "200":
           description: List of transactions
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Transaction'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
     post:
-      summary: Create a new transaction
+      summary: Create a transaction
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Transaction'
+              $ref: "#/components/schemas/Transaction"
       responses:
-        '201':
+        "201":
           description: Transaction created
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    $ref: '#/components/schemas/Transaction'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Transaction"
 
   /transactions/{id}:
     get:
       summary: Get transaction by ID
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
-          schema: { type: string }
+          schema:
+            type: string
       responses:
-        '200':
+        "200":
           description: Transaction details
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    $ref: '#/components/schemas/Transaction'
-        '500':
-          description: Internal server error
+                $ref: "#/components/schemas/Transaction"
+    put:
+      summary: Update transaction by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Transaction"
+      responses:
+        "200":
+          description: Transaction updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Transaction"
+    delete:
+      summary: Delete transaction by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Transaction deleted
+
+  /dtrans:
+    get:
+      summary: List all debtor transactions
+      responses:
+        "200":
+          description: List of debtor transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DTrans"
+    post:
+      summary: Create a debtor transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DTrans"
+      responses:
+        "201":
+          description: Debtor transaction created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DTrans"
+
+  /dtrans/{id}:
+    get:
+      summary: Get debtor transaction by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Debtor transaction details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DTrans"
+    put:
+      summary: Update debtor transaction by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DTrans"
+      responses:
+        "200":
+          description: Debtor transaction updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DTrans"
+    delete:
+      summary: Delete debtor transaction by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Debtor transaction deleted
+
+  /dtrans/filter/{id}:
+    get:
+      summary: Get filtered debtor transactions by debtor ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Filtered debtor transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DTrans"
 
   /transaction-with-dtrans:
     post:
-      summary: Create a transaction with debtor transaction
+      summary: Create transaction with debtor transaction
       requestBody:
         required: true
         content:
@@ -379,102 +283,103 @@ paths:
               type: object
               properties:
                 transaction:
-                  $ref: '#/components/schemas/Transaction'
+                  $ref: "#/components/schemas/Transaction"
                 dtrans:
-                  $ref: '#/components/schemas/DTrans'
+                  $ref: "#/components/schemas/DTrans"
       responses:
-        '201':
-          description: Transaction with debtor transaction created
+        "201":
+          description: Created transaction with debtor transaction
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
                   transaction:
-                    $ref: '#/components/schemas/Transaction'
+                    $ref: "#/components/schemas/Transaction"
                   dtrans:
-                    $ref: '#/components/schemas/DTrans'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /auth/[...nextauth]:
-    get:
-      summary: NextAuth authentication endpoint
-      responses:
-        '200':
-          description: Authentication response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  user:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      image:
-                        type: string
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                    $ref: "#/components/schemas/DTrans"
 
 components:
   schemas:
     Account:
       type: object
       properties:
-        _id: { type: string }
-        name: { type: string }
-        balance: { type: number }
+        id:
+          type: string
+        name:
+          type: string
+        balance:
+          type: number
+          default: 0
+      required: [name]
+
     Category:
       type: object
       properties:
-        _id: { type: string }
-        name: { type: string }
+        id:
+          type: string
+        name:
+          type: string
+      required: [name]
+
     Debtor:
       type: object
       properties:
-        _id: { type: string }
-        name: { type: string }
-    DTrans:
-      type: object
-      properties:
-        _id: { type: string }
-        debtorId: { type: string }
-        amount: { type: number }
-        date: { type: string, format: date-time }
-        expectedReturnDate: { type: string, format: date-time }
+        id:
+          type: string
+        name:
+          type: string
+      required: [name]
+
     Transaction:
       type: object
       properties:
-        _id: { type: string }
-        type: { type: string, enum: [income, expense] }
-        amount: { type: number }
-        date: { type: string, format: date-time }
+        id:
+          type: string
+        type:
+          type: string
+          enum: [income, expense]
+        amount:
+          type: number
         account:
-          $ref: '#/components/schemas/Account'
+          type: string
+        date:
+          type: string
+          format: date-time
+        to:
+          type: string
+          nullable: true
         category:
-          $ref: '#/components/schemas/Category'
-        status: { type: string, enum: [open, completed, pending] }
-        to: { type: string }
-    Error:
+          type: string
+        status:
+          type: string
+          enum: [open, completed, pending]
+          default: open
+      required: [type, amount, account, category]
+
+    DTrans:
       type: object
       properties:
-        success:
-          type: boolean
-        message:
+        id:
           type: string
+        debtor:
+          type: string
+        transactions:
+          type: array
+          items:
+            type: object
+            properties:
+              transaction:
+                type: string
+              expectedReturnDate:
+                type: string
+                format: date-time
+                nullable: true
+              actualReturnDate:
+                type: string
+                format: date-time
+                nullable: true
+              creditedTillDate:
+                type: number
+                default: 0
+      required: [debtor, transactions]

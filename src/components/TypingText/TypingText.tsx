@@ -1,7 +1,6 @@
 "use client";
-
+import styles from "./TypingText.module.css";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 
 interface TypingProps {
   text: string;
@@ -31,19 +30,10 @@ export function TypingText({ text, speed = 100, once = true }: TypingProps) {
   }, [text, speed, once, finished]);
 
   return (
-    <motion.span
-      className="text-lg font-mono font-bold mr-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-    >
+    
+    <span className={styles.typing}>
       {displayed}
-      {/* Blinking cursor */}
-      <motion.span
-        animate={{ opacity: [0, 1, 0] }}
-        transition={{ repeat: Infinity, duration: 1 }}
-      >
-        |
-      </motion.span>
-    </motion.span>
+      <span className={styles.cursor}>|</span>
+    </span>
   );
 }
