@@ -27,6 +27,10 @@ COPY --from=builder /app/package.json ./package.json
 
 RUN npm install next
 
+# Create a non-root user and switch
+RUN addgroup -S nodejs && adduser -S nodeuser -G nodejs
+USER nodeuser
+
 # Expose the port Next.js runs on
 EXPOSE 3000
 
