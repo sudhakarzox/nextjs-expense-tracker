@@ -9,6 +9,7 @@ COPY src ./src
 COPY public ./public
 COPY next.config.ts ./
 COPY tsconfig.json ./
+COPY postcss.config.js ./
 
 ARG MONGODB_URI
 ENV MONGODB_URI=$MONGODB_URI
@@ -24,11 +25,12 @@ WORKDIR /app
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/next.config.js ./
 
 RUN npm install --ignore-scripts next 
 
 # Create a non-root user and switch
-RUN addgroup -S nodejs && adduser -S nodeuser -G nodejs
+RUN addgroup -S nodejs && adduser -S nodeuser -G nodejs 
 USER nodeuser
 
 # Expose the port Next.js runs on
