@@ -12,7 +12,7 @@ Cloud-native deployment on Google Cloud Run with MongoDB Atlas backend
 Integrated DevSecOps pipeline with automated security checks
 Visual reports for expense analysis
 
-##Architecture
+## Architecture
 The application follows a secure, cloud-native architecture.
 Architecture Diagram: [View Here](https://psudhakar963.atlassian.net/wiki/external/OTk2MzdhZmY3MDEyNDgyODkxMDJmZjg4OTViNmI1MjU)
 Entity Relationship Diagram (ERD): [View Here](https://psudhakar963.atlassian.net/wiki/external/NTAyZDQ3YzU2M2YzNDAwNGE5MzQxNTJkYjc0MDEzNTA)
