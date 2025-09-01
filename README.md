@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Secure Expense Tracker App
 
-## Getting Started
+A cloud-native expense tracking application built with Next.js and deployed on Google Cloud Run, demonstrating secure development and DevSecOps best practices.
 
-First, run the development server:
+This project is designed as a personal expense management tool and as a showcase of security-first engineering: integrating SAST, DAST, container scanning, secret management, and monitoring into a modern CI/CD pipeline.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Track expenses with categories, transaction types, and date filters
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Secure authentication 
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Cloud-native deployment on Google Cloud Run with MongoDB Atlas backend
 
-## Learn More
+Integrated DevSecOps pipeline with automated security checks
 
-To learn more about Next.js, take a look at the following resources:
+Visual reports for expense analysis
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Architecture
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The application follows a secure, cloud-native architecture.
 
-## Deploy on Vercel
+Architecture Diagram: [View Here](https://psudhakar963.atlassian.net/wiki/external/OTk2MzdhZmY3MDEyNDgyODkxMDJmZjg4OTViNmI1MjU)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Entity Relationship Diagram (ERD): [View Here](https://psudhakar963.atlassian.net/wiki/external/NTAyZDQ3YzU2M2YzNDAwNGE5MzQxNTJkYjc0MDEzNTA)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+DevSecOps Practices
+
+This project demonstrates how to integrate security into every stage of the SDLC:
+
+SAST: SonarCloud
+ for static code analysis & quality gates
+
+DAST: OWASP ZAP
+ for runtime security testing
+
+Container Scanning: Trivy
+ & Docker Scout for image vulnerability checks
+
+Secrets Management: Google Secret Manager
+ for secure storage of credentials
+
+Monitoring & Logging: GCP Cloud Monitoring for system health and security posture
+
+CI/CD: Google Cloud Build with automated build → scan → deploy workflow
+
+Tech Stack
+
+Frontend: Next.js, Tailwind CSS
+
+Backend: Next.js API routes, MongoDB Atlas
+
+Infrastructure: Google Cloud Run, Docker, Artifact Registry
+
+DevSecOps Tooling: SonarCloud, OWASP ZAP, Trivy, Docker Scout, Google Secret Manager, GCP Cloud Build
+
+
+Deploy to Cloud Run (via CI/CD pipeline)
+
+Push changes → GCP Cloud Build runs automated pipeline:
+
+Build → SAST/DAST → Container scan → Push to Artifact Registry → Deploy to Cloud Run
+
+Reports & Analytics
+
+Transaction breakdown by type and date range
+
+Interactive charts for expense visualization
+
+Exportable data for personal finance tracking
+
+Why This Project
+
+This project is not just a simple expense tracker — it is a hands-on showcase of DevSecOps principles:
+
+Security integrated into the CI/CD pipeline
+
+Cloud-native, containerized deployment
+
+Real-world monitoring, logging, and compliance practices
