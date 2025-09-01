@@ -33,8 +33,8 @@ The application follows a secure, cloud-native architecture.
 - Infrastructure: Google Cloud Run, Docker, Artifact Registry
 - DevSecOps Tooling: SonarCloud, OWASP ZAP, Trivy, Docker Scout, Google Secret Manager, GCP Cloud Build
 - Deploy to Cloud Run (via CI/CD pipeline)
-- Push changes → GCP Cloud Build runs automated pipeline:
-- Build → SAST/DAST → Container scan → Push to Artifact Registry → Deploy to Cloud Run
+  - Push changes → GitHub → GCP Cloud Build runs automated pipeline:
+    - SAST(SonarCloud) → Build → SAST/DAST Container scan/OWASP ZAP → Push to Artifact Registry → Deploy to Cloud Run
 
 ## Reports & Analytics
 - Transaction breakdown by type and date range
@@ -42,7 +42,7 @@ The application follows a secure, cloud-native architecture.
 -  Exportable data for personal finance tracking
 
 ## Why This Project
-This project is not just a simple expense tracker — it is a hands-on showcase of DevSecOps principles:
+This project is not just a simple expense tracker —  it is a hands-on demonstration of expertise in developing robust backend REST services, advanced frontend applications with Next.js, secure coding practices, and integrated DevSecOps principles.:
 - Security integrated into the CI/CD pipeline
 - Cloud-native, containerized deployment
 - Real-world monitoring, logging, and compliance practices
