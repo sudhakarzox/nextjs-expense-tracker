@@ -1,10 +1,9 @@
 
 # Expense Tracker App
 
-A cloud-native expense tracking application built with Next.js and deployed on Google Cloud Run, demonstrating secure development and DevSecOps best practices.
+A cloud-native expense tracking application developed using Next.js and deployed on Google Cloud Run, exemplifying secure development and DevSecOps best practices.
 
-This project is designed as a personal expense management tool and as a showcase of security-first engineering: integrating SAST, DAST, container scanning, secret management, and monitoring into a modern CI/CD pipeline.
-
+Designed both as a personal expense management tool and a demonstration of security-first engineering, this project integrates static application security testing (SAST), dynamic application security testing (DAST), container vulnerability scanning, secrets management, and monitoring within a modern CI/CD pipeline.
 ## Features
 Track expenses with categories, transaction types, and date filters
 Secure authentication 
