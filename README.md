@@ -13,7 +13,7 @@ Visual reports for expense analysis
 
 ## Architecture
 The application follows a secure, cloud-native architecture.
-- Architecture Diagram: [View Here](https://psudhakar963.atlassian.net/wiki/external/OTk2MzdhZmY3MDEyNDgyODkxMDJmZjg4OTViNmI1MjU)
+- Architecture Diagram: [View Here](https://drive.usercontent.google.com/uc?id=1hHntlcN221ZmXdDvbnXWC0nGt9rEm5GW)
 - Entity Relationship Diagram (ERD): [View Here](https://psudhakar963.atlassian.net/wiki/external/NTAyZDQ3YzU2M2YzNDAwNGE5MzQxNTJkYjc0MDEzNTA)
 
 ## DevSecOps Practices

@@ -25,7 +25,7 @@ type TransactionItem = {
 export default function DTransactions({ debtorId }: { debtorId: string }) {
   const [transactions, setTransactions] = useState<TransactionItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState<string>('open');
+  const [statusFilter, setStatusFilter] = useState<string>('');
 
   const statusOptions = [
     { value: '', label: 'All' },
