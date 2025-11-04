@@ -13,8 +13,13 @@ Visual reports for expense analysis
 
 ## Architecture
 The application follows a secure, cloud-native architecture.
-- Architecture Diagram: [View Here](https://drive.usercontent.google.com/uc?id=1hHntlcN221ZmXdDvbnXWC0nGt9rEm5GW)
-- Entity Relationship Diagram (ERD): [View Here](https://psudhakar963.atlassian.net/wiki/external/NTAyZDQ3YzU2M2YzNDAwNGE5MzQxNTJkYjc0MDEzNTA)
+- Architecture Diagram: ![arch](https://github.com/user-attachments/assets/77188b72-e1ea-4632-8967-5f09e45ca541)
+
+- Entity Relationship Diagram (ERD): <img width="1113" height="444" alt="image" src="https://github.com/user-attachments/assets/b61d3fe3-d2b6-4f30-996f-6114b991c535" />
+
+- Sample Data: <img width="1325" height="575" alt="image" src="https://github.com/user-attachments/assets/1503ee71-73b6-4401-87b9-3782db10e264" />
+
+
 
 ## DevSecOps Practices
 - This project demonstrates how to integrate security into every stage of the SDLC:
