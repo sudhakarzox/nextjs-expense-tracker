@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import SignOutButton from "@/components/SignoutButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
+import { TypingText } from "@/components/TypingText/TypingText";
 
 
 export const dynamic = "force-dynamic";
@@ -19,6 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
+  const user = process.env.USER as string;
 
   if (!session) {
     redirect("/api/auth/signin"); // Redirect to sign-in if no session
@@ -67,7 +69,17 @@ export default async function RootLayout({
             </header>
 
             {/* Main Content */}
-            <main className="flex-grow p-4">{children}</main>
+            {/* <main className="flex-grow p-4">{children}</main> */}
+            {session?.user?.name === user && (
+                <main className="flex-grow p-4">{children}</main>
+              )}
+              {session?.user?.name !== user && (
+                <div className="flex flex-col items-center justify-center space-y-6 bg-black text-gray-150 min-h-screen">
+                  <main className="flex-grow items-center p-4">
+                    <TypingText text={`Hii, Sry..! you are not Authorized...... `} />
+                  </main>
+                </div>
+              )}
 
             {/* Footer */}
             <footer className="w-full border-t bg-gray-800   px-6 py-2">
