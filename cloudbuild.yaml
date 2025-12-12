@@ -64,7 +64,7 @@ steps:
       - --platform
       - managed
       - --allow-unauthenticated  # Remove for private endpoints
-      - --set-env-vars=NEXTAUTH_URL="https://next-exp-$PROJECT_NUMBER.us-central1.run.app,NODE_ENV=production,DB=expense-tracker,USER=\"Sudhakar P\""
+      - --set-env-vars="NEXTAUTH_URL=https://next-exp-$PROJECT_NUMBER.us-central1.run.app,NODE_ENV=production,DB=expense-tracker,USER=\"Sudhakar P\""
       - --update-secrets=MONGODB_URI=projects/$PROJECT_NUMBER/secrets/MONGODB_URI/versions/latest,NEXTAUTH_SECRET=projects/$PROJECT_NUMBER/secrets/NEXTAUTH_SECRET:latest,GOOGLE_CLIENT_SECRET=projects/$PROJECT_NUMBER/secrets/GOOGLE_CLIENT_SECRET:latest,GOOGLE_CLIENT_ID=projects/$PROJECT_NUMBER/secrets/GOOGLE_CLIENT_ID:latest
     env:
       - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
