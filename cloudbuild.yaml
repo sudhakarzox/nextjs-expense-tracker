@@ -77,7 +77,7 @@ availableSecrets:
   secretManager:
   # - versionName: projects/$PROJECT_ID/secrets/MONGODB_URI/versions/latest
   #   env: MONGODB_URI
-  - versionName: projects/$PROJECT_ID/secrets/SONARCLOUD_TOKEN/versions/1
+  - versionName: projects/$PROJECT_ID/secrets/SONARCLOUD_TOKEN/versions/latest
     env: SONARCLOUD_TOKEN
   # - versionName: projects/$PROJECT_ID/secrets/NEXTAUTH_SECRET/versions/latest
   #   env: NEXTAUTH_SECRET
